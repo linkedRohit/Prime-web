@@ -4,6 +4,7 @@
         <title>Laravel</title>	
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {!! HTML::style('css/bootstrap.min.css') !!}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <style type="text/css">
             .wf{ width:100%; margin-left:auto; margin-right:auto; }
             .br { border-right:1px solid #ECF0F1 }
@@ -11,78 +12,68 @@
             .p0 { padding:0; border-radius:0 }
             .p0 .progress-bar, .p0 { height: 14px }
             .f08 { font-size: 0.8em; color: #777 }	
+			.f09 { font-size: 0.9em; color: #555 }
             .rc .text-muted { font-size:0.8em }
             .rc h4 { font-size:1.2em }
             .mb0 { margin:0 5px 1px 0 }
+			.mt5 { margin-top: 5px }
+			
+			<!--angular js feed animation-->
+			.animate-enter, 
+			.animate-leave
+			{ 
+				-webkit-transition: 400ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
+				-moz-transition: 400ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
+				-ms-transition: 400ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
+				-o-transition: 400ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
+				transition: 400ms cubic-bezier(0.000, 0.000, 0.580, 1.000) all;
+				position: relative;
+				display: block;
+			} 
+
+			.animate-enter.animate-enter-active, 
+			.animate-leave {
+				opacity: 1;
+				right: 0;
+				height: 30px;
+			}
+
+			.animate-leave.animate-leave-active,
+			.animate-enter {
+				opacity: 0;
+				right: -50px;
+				height: 0px;
+			}
         </style>
     </head>
-    <body>
+    <body ng-app="primeApp">
         <div class="navbar navbar-default">
             <a class="navbar-brand">prime</a>
         </div>
 
 
         <div class="container">
-            <div class="row-fluid">
-                <div class="panel panel-default">
-                    <div class="panel-heading ps">
-                        <div class="row-fluid clearfix">
-                            <div class="col-xs-2">
-                                <img class="img-circle" src="https://graph.facebook.com/100001038273443/picture?width=42&height=42" />
-                            </div>
-                            <div class="col-xs-10 rc">
-                                <h5 class="mb0">Mayank Mishra</h5>
-                                <div class="text-muted">Asked 5 mintues ago</div>
-                            </div>
-                            <div class="col-xs-12">
-                                <h5>Which Smartphone is better, I have budget of 30,000 INR.. Please suggest other than this?</h5>
-                                <!--<p class="text-info">#smartphone #mobile #under30k #budgetphone</p>-->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-body ps">
-                        <div class="row-fluid clearfix">
-                            <div class="col-xs-6 br" id="ips">
-                                <div>
-                                    <img class="wf" src="{{ asset('img/iphone6s.jpg') }}" alt="iPhone 6s" />
-                                    <p class="text-center">iPhone 6s</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-6" id="ips">
-                                <div>
-                                    <img class="wf" src="{{ asset('img/samsungs6.jpg') }}" alt="iPhone 6s" />
-                                    <p class="text-center">Samsung Galaxy S6</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row-fluid clearfix">
-                            <div class="col-xs-6">
-                                <div class="progress mb0 p0">
-                                    <div class="pull-right progress-bar progress-bar-success" role="progressbar" aria-valuenow="70"
-                                         aria-valuemin="0" aria-valuemax="100" style="width:70%">
-
-                                    </div>
-                                </div>
-                                <span class="pull-right f08 clearfix">340 votes</span>	</div>
-                            <div class="col-xs-6">
-                                <div class="progress mb0 p0">
-                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="30"
-                                         aria-valuemin="0" aria-valuemax="100" style="width:30%">
-                                    </div>
-                                </div>
-                                <span class="pull-left f08 clearfix">95 votes</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="row">
-                            <div class="col-xs-6">+ 36 Comments</div>					
-                            <div class="col-xs-6 pull-right">Share on f w t</div>
-                        </div>
-                    </div>
-                </div>
+            <div class="row-fluid" ng-controller="FeedController">
+				@include('card')
             </div>
-
         </div>
     </body>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="http://momentjs.com/downloads/moment.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script type="text/javascript">
+     var primeApp = angular.module('primeApp', [], function($interpolateProvider) {
+        $interpolateProvider.startSymbol('<%');
+        $interpolateProvider.endSymbol('%>');
+    }).filter('fromNow', function() {
+			return function(date) {
+				return moment(date).fromNow();
+			}
+	}).controller('FeedController', function($scope, $http) {
+		$http.get("{{ url('/feed') }}")
+		.success(function(response) {
+			$scope.feed = response;
+		});
+	});
+    </script>
 </html>
