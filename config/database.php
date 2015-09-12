@@ -54,10 +54,10 @@ return [
 
         'mysql' => [
             'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'localhost'),
-            'database'  => env('DB_DATABASE', 'forge'),
-            'username'  => env('DB_USERNAME', 'forge'),
-            'password'  => env('DB_PASSWORD', ''),
+            'host'      => env('DB_HOST', 'moviefreaks.in'),
+            'database'  => env('DB_DATABASE', 'moviefr1_app'),
+            'username'  => env('DB_USERNAME', 'moviefr1_app'),
+            'password'  => env('DB_PASSWORD', 'prime123#'),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
