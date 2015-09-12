@@ -7,6 +7,6 @@
     , "jade": ">= 0.0.1"
   },
   "scripts": {
-    "start": "app.js"
+    "start": "node app"
   }
 }
